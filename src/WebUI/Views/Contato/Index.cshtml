@@ -1,0 +1,45 @@
+@model IEnumerable<Contato>
+
+@{
+    ViewBag.Title = "Contatos";
+}
+
+<h2>Contatos</h2>
+<a asp-controller="Contato" asp-action="Create" class="btn btn-primary">Novo</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(item => item.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(item => item.Sobrenome)
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(item => item.Email)
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(itemModel => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(itemModel => item.Sobrenome)
+                </td>
+                <td>
+                    @Html.DisplayFor(itemModel => item.Email)
+                </td>
+                <td>
+                    <a asp-controller="Contato" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
