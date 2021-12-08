@@ -43,7 +43,7 @@ namespace DAO
             using (var con = Connection)
             {
                 con.Open();
-                con.Execute(
+                contato.Id = con.Execute(
                     @"INSERT INTO Contato
                     (Nome, Sobrenome, Email) VALUES
                     (@Nome, @Sobrenome, @Email);", contato);
@@ -52,7 +52,7 @@ namespace DAO
 
         public List<ContatoDTO> Consultar()
         {
-            using(var con = Connection)
+            using (var con = Connection)
             {
                 con.Open();
                 var result = con.Query<ContatoDTO>(
@@ -65,7 +65,7 @@ namespace DAO
 
         public ContatoDTO Consultar(int id)
         {
-            using(var con = Connection)
+            using (var con = Connection)
             {
                 con.Open();
                 var result = con.Query<ContatoDTO>(
@@ -74,6 +74,32 @@ namespace DAO
                     WHERE Id = @id", new { id }
                 ).FirstOrDefault();
                 return result;
+            }
+        }
+
+        public void Atualizar(ContatoDTO contato)
+        {
+            using (var con = Connection)
+            {
+                con.Open();
+                contato.Id = con.Execute(
+                    @"UPDATE Contato SET 
+                        Nome = @Nome, 
+                        Sobrenome = @Sobrenome, 
+                        Email = @Email
+                        WHERE Id = @Id;", contato);
+            }
+        }
+
+
+        public void Excluir(int id)
+        {
+            using (var con = Connection)
+            {
+                con.Open();
+                con.Execute(
+                    @"DELETE FROM Contato
+                    WHERE Id = @Id;", new { id });
             }
         }
     }

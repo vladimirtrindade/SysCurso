@@ -38,6 +38,8 @@
                 </td>
                 <td>
                     <a asp-controller="Contato" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+                    <a asp-controller="Contato" asp-action="Update" asp-route-id="@item.Id">Atualizar</a>
+                    <a asp-controller="Contato" asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
                 </td>
             </tr>
         }

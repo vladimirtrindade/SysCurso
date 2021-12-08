@@ -70,5 +70,47 @@ namespace WebUI.Controllers
 
             return View();
         }
+
+        public IActionResult Update(int id)        
+        {
+            var contatoDAO = new ContatoDAO();
+            var contatoDTO = contatoDAO.Consultar(id);
+
+            var contato = new Contato()
+            {
+                Id = contatoDTO.Id,
+                Nome = contatoDTO.Nome,
+                Sobrenome = contatoDTO.Sobrenome,
+                Email = contatoDTO.Email
+            };
+
+            return View(contato);
+        }
+
+
+        [HttpPost]
+        public IActionResult Update(Contato contato)
+        {
+            var contatoDTO = new ContatoDTO
+            {
+                Id = contato.Id,
+                Nome = contato.Nome,
+                Sobrenome = contato.Sobrenome,
+                Email = contato.Email
+            };
+
+            var contatoDAO = new ContatoDAO();
+            contatoDAO.Atualizar(contatoDTO);
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var contatoDAO = new ContatoDAO();
+            contatoDAO.Excluir(id);
+
+            return RedirectToAction("Index");
+        }
     }
 }
