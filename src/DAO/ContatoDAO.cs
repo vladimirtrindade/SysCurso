@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
@@ -46,6 +47,33 @@ namespace DAO
                     @"INSERT INTO Contato
                     (Nome, Sobrenome, Email) VALUES
                     (@Nome, @Sobrenome, @Email);", contato);
+            }
+        }
+
+        public List<ContatoDTO> Consultar()
+        {
+            using(var con = Connection)
+            {
+                con.Open();
+                var result = con.Query<ContatoDTO>(
+                    @"SELECT Id, Nome, Sobrenome, Email
+                    FROM Contato"
+                ).ToList();
+                return result;
+            }
+        }
+
+        public ContatoDTO Consultar(int id)
+        {
+            using(var con = Connection)
+            {
+                con.Open();
+                var result = con.Query<ContatoDTO>(
+                    @"SELECT Id, Nome, Sobrenome, Email
+                    FROM Contato
+                    WHERE Id = @id", new { id }
+                ).FirstOrDefault();
+                return result;
             }
         }
     }
