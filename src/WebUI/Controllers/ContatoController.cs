@@ -41,6 +41,11 @@ namespace WebUI.Controllers
         [HttpPost]
         public IActionResult Create(ContatoViewModel contato)
         {
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+
             var ContatoDTO = new ContatoDTO
             {
                 Nome = contato.Nome,
@@ -85,6 +90,11 @@ namespace WebUI.Controllers
         [HttpPost]
         public IActionResult Update(ContatoViewModel contato)
         {
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+
             var contatoDTO = new ContatoDTO
             {
                 Id = contato.Id,
