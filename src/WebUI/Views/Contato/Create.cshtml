@@ -1,6 +1,15 @@
-@model WebUI.Models.Contato
+@model ContatoViewModel
 
-<form asp-action="Create">
+@{
+    ViewBag.Title = "Novo";
+}
+
+<h2>Criar Novo Contato</h2>
+
+<form asp-controller="Contato" asp-action="Create">
+
+    <input asp-for="Id" hidden />
+
     <div class="form-group">
         <label asp-for="Nome" class="form-label"></label>
         <input asp-for="Nome" class="form-control" />
@@ -12,14 +21,13 @@
     </div>
 
     <div class="form-group">
-
         <label asp-for="Email" class="form-label"></label>
         <input asp-for="Email" class="form-control" />
     </div>
 
     <div class="form-group">
         <input type="submit" value="Salvar" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        <a asp-controller="Contato" asp-action="Index" class="btn btn-secondary">Cancelar</a>
     </div>
 
 </form>

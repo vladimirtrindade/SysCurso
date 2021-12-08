@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebUI.Models
 {
-    public class Contato
+    public class ContatoViewModel
     {
         public int Id { get; set; }
 

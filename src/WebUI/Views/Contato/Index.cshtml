@@ -1,13 +1,14 @@
-@model IEnumerable<Contato>
+@model IEnumerable<ContatoViewModel>
 
 @{
-    ViewBag.Title = "Contatos";
+    ViewBag.Title = "Todos";
 }
 
-<h2>Contatos</h2>
+<h1>Contatos</h1>
+
 <a asp-controller="Contato" asp-action="Create" class="btn btn-primary">Novo</a>
 
-<table class="table">
+<table class="table table-responsive-lg">
     <thead>
         <tr>
             <th>
@@ -15,12 +16,11 @@
             </th>
             <th>
                 @Html.DisplayNameFor(item => item.Sobrenome)
-
             </th>
             <th>
                 @Html.DisplayNameFor(item => item.Email)
-
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -37,9 +37,9 @@
                     @Html.DisplayFor(itemModel => item.Email)
                 </td>
                 <td>
-                    <a asp-controller="Contato" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
-                    <a asp-controller="Contato" asp-action="Update" asp-route-id="@item.Id">Atualizar</a>
-                    <a asp-controller="Contato" asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
+                    <a asp-controller="Contato" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Detalhes</a>
+                    <a asp-controller="Contato" asp-action="Update" asp-route-id="@item.Id" class="btn btn-outline-warning">Atualizar</a>
+                    <a asp-controller="Contato" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Excluir</a>
                 </td>
             </tr>
         }

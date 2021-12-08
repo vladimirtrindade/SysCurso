@@ -1,30 +1,27 @@
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using DAO;
 using DTO;
-using Microsoft.AspNetCore.Mvc;
 using WebUI.Models;
 
 namespace WebUI.Controllers
 {
     public class ContatoController : Controller
     {
-        List<Contato> lstContato = new List<Contato>();
+        private ContatoDAO _contatoDAO;
 
         public ContatoController()
         {
-            lstContato.Add(new Contato() { Id = 1, Nome = "vla", Sobrenome = "Dimir", Email = "vla@dimir.com" });
-            lstContato.Add(new Contato() { Id = 2, Nome = "con", Sobrenome = "Suelo", Email = "con@suelo.com" });
+            _contatoDAO = new ContatoDAO();
         }
-
         public IActionResult Index()
         {
-            var dao = new ContatoDAO();
-            var lstContatoDTO = dao.Consultar();
-            var lstContato = new List<Contato>();
+            var lstContatoDTO = _contatoDAO.Consultar();
+            var lstContato = new List<ContatoViewModel>();
 
             foreach(var dto in lstContatoDTO)
             {
-                lstContato.Add(new Contato()
+                lstContato.Add(new ContatoViewModel()
                 {
                     Id = dto.Id,
                     Nome = dto.Nome,
@@ -35,48 +32,46 @@ namespace WebUI.Controllers
             return View(lstContato);
         }
 
-        public IActionResult Details(int id)
-        {
-            var contatoDAO = new ContatoDAO();
-            var contatoDTO = contatoDAO.Consultar(id);
-
-            var contato = new Contato()
-            {
-                Id = contatoDTO.Id,
-                Nome = contatoDTO.Nome,
-                Sobrenome = contatoDTO.Sobrenome,
-                Email = contatoDTO.Email
-            };
-            return View(contato);
-        }
-
         public IActionResult Create()
         {
             return View();
         }
 
+
         [HttpPost]
-        public IActionResult Create(Contato contato)
+        public IActionResult Create(ContatoViewModel contato)
         {
-            var contatoDTO = new ContatoDTO
+            var ContatoDTO = new ContatoDTO
             {
                 Nome = contato.Nome,
                 Sobrenome = contato.Sobrenome,
                 Email = contato.Email
             };
 
-            var contatoDAO = new ContatoDAO();
-            contatoDAO.Criar(contatoDTO);
+            _contatoDAO.Criar(ContatoDTO);
 
-            return View();
+            return RedirectToAction("Index");
         }
 
-        public IActionResult Update(int id)        
+        public IActionResult Details(int id)
         {
-            var contatoDAO = new ContatoDAO();
-            var contatoDTO = contatoDAO.Consultar(id);
+            var contatoDTO = _contatoDAO.Consultar(id);
 
-            var contato = new Contato()
+            var contato = new ContatoViewModel()
+            {
+                Id = contatoDTO.Id,
+                Nome = contatoDTO.Nome,
+                Sobrenome = contatoDTO.Sobrenome,
+                Email = contatoDTO.Email
+            };
+            return View(contato);
+        }
+
+        public IActionResult Update(int id)
+        {
+            var contatoDTO = _contatoDAO.Consultar(id);
+
+            var contato = new ContatoViewModel()
             {
                 Id = contatoDTO.Id,
                 Nome = contatoDTO.Nome,
@@ -87,9 +82,8 @@ namespace WebUI.Controllers
             return View(contato);
         }
 
-
         [HttpPost]
-        public IActionResult Update(Contato contato)
+        public IActionResult Update(ContatoViewModel contato)
         {
             var contatoDTO = new ContatoDTO
             {
@@ -99,16 +93,15 @@ namespace WebUI.Controllers
                 Email = contato.Email
             };
 
-            var contatoDAO = new ContatoDAO();
-            contatoDAO.Atualizar(contatoDTO);
+            _contatoDAO.Atualizar(contatoDTO);
 
             return RedirectToAction("Index");
         }
 
+
         public IActionResult Delete(int id)
         {
-            var contatoDAO = new ContatoDAO();
-            contatoDAO.Excluir(id);
+            _contatoDAO.Excluir(id);
 
             return RedirectToAction("Index");
         }

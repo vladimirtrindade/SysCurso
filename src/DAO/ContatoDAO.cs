@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using Dapper;
 using DTO;
-
+using Dapper;
 
 namespace DAO
 {
     public class ContatoDAO
     {
         private string DataSourceFile => Environment.CurrentDirectory + "\\SisCursoDB.sqlite";
+
         public SQLiteConnection Connection => new SQLiteConnection("Data Source=" + DataSourceFile);
 
         public ContatoDAO()
@@ -28,7 +28,7 @@ namespace DAO
             {
                 con.Open();
                 con.Execute(
-                    @"create table Contato                    
+                    @"CREATE TABLE Contato
                     (
                         Id          integer primary key autoincrement,
                         Nome        varchar(100) not null,
@@ -38,21 +38,9 @@ namespace DAO
             }
         }
 
-        public void Criar(ContatoDTO contato)
-        {
-            using (var con = Connection)
-            {
-                con.Open();
-                contato.Id = con.Execute(
-                    @"INSERT INTO Contato
-                    (Nome, Sobrenome, Email) VALUES
-                    (@Nome, @Sobrenome, @Email);", contato);
-            }
-        }
-
         public List<ContatoDTO> Consultar()
         {
-            using (var con = Connection)
+            using(var con = Connection)
             {
                 con.Open();
                 var result = con.Query<ContatoDTO>(
@@ -63,34 +51,49 @@ namespace DAO
             }
         }
 
-        public ContatoDTO Consultar(int id)
+
+        public void Criar(ContatoDTO contato)
         {
-            using (var con = Connection)
+            using(var con = Connection)
+            {
+                con.Open();
+                contato.Id = con.Execute(
+                  @"INSERT INTO Contato
+                  (Nome, Sobrenome, Email) VALUES
+                  (@Nome, @Sobrenome, @Email);", contato
+                );
+            }
+        }
+
+        public ContatoDTO Consultar(int id) 
+        {
+            using(var con = Connection)
             {
                 con.Open();
                 var result = con.Query<ContatoDTO>(
                     @"SELECT Id, Nome, Sobrenome, Email
                     FROM Contato
-                    WHERE Id = @id", new { id }
+                    WHERE Id = @Id", new { id }
                 ).FirstOrDefault();
                 return result;
             }
         }
 
+
         public void Atualizar(ContatoDTO contato)
         {
-            using (var con = Connection)
+            using(var con = Connection)
             {
                 con.Open();
                 contato.Id = con.Execute(
-                    @"UPDATE Contato SET 
-                        Nome = @Nome, 
-                        Sobrenome = @Sobrenome, 
-                        Email = @Email
-                        WHERE Id = @Id;", contato);
+                    @"UPDATE Contato SET
+                    Nome = @Nome,
+                    Sobrenome = @Sobrenome,
+                    Email = @Email
+                    WHERE Id = @Id;", contato
+                );
             }
         }
-
 
         public void Excluir(int id)
         {
@@ -99,7 +102,8 @@ namespace DAO
                 con.Open();
                 con.Execute(
                     @"DELETE FROM Contato
-                    WHERE Id = @Id;", new { id });
+                    WHERE Id = @Id;", new { id }
+                );
             }
         }
     }
