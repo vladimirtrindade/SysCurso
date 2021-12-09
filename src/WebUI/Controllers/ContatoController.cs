@@ -4,7 +4,7 @@ using DAO;
 using DTO;
 using WebUI.Models;
 using AutoMapper;
-
+using System;
 
 namespace WebUI.Controllers
 {
@@ -27,7 +27,7 @@ namespace WebUI.Controllers
             var lstContatoDTO = _contatoDAO.Consultar();
             var lstContatoViewModel = new List<ContatoViewModel>();
 
-            foreach(var contatoDTO in lstContatoDTO)
+            foreach (var contatoDTO in lstContatoDTO)
             {
                 lstContatoViewModel.Add(_mapper.Map<ContatoViewModel>(contatoDTO));
             }
@@ -43,7 +43,7 @@ namespace WebUI.Controllers
 
             var lstTelefoneDTO = _telefoneDAO.ConsultarPorContato(id);
 
-            foreach(var telefoneDTO in lstTelefoneDTO)
+            foreach (var telefoneDTO in lstTelefoneDTO)
             {
                 contatoViewModel.LstTelefoneViewModel.Add(_mapper.Map<TelefoneViewModel>(telefoneDTO));
             }
@@ -61,7 +61,7 @@ namespace WebUI.Controllers
         [HttpPost]
         public IActionResult Create(ContatoViewModel contatoViewModel)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View();
             }
@@ -83,7 +83,7 @@ namespace WebUI.Controllers
         [HttpPost]
         public IActionResult Update(ContatoViewModel contatoViewModel)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View();
             }
@@ -97,7 +97,15 @@ namespace WebUI.Controllers
 
         public IActionResult Delete(int id)
         {
-            _contatoDAO.Excluir(id);
+            try
+            {
+                _contatoDAO.Excluir(id);
+                TempData["SuccessMessage"] = "Contato excluído com sucesso";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
+            }
 
             return RedirectToAction("Index");
         }

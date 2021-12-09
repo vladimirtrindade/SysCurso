@@ -12,7 +12,7 @@ namespace DAO
     {
         protected string DataSourceFile => Environment.CurrentDirectory + "\\SisCursoDB.sqlite";
 
-        protected SQLiteConnection Connection => new SQLiteConnection("Data Source=" + DataSourceFile);
+        protected SQLiteConnection Connection => new SQLiteConnection("Data Source=" + DataSourceFile + ";foreign keys=true;");
 
         public BaseDAO()
         {
