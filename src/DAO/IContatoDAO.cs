@@ -5,10 +5,14 @@ namespace DAO
 {
     public interface IContatoDAO
     {
+         List<ContatoDTO> Consultar();
+
+         ContatoDTO Consultar(int id);
+
+         void Criar(ContatoDTO contato);
+
         void Atualizar(ContatoDTO contato);
-        List<ContatoDTO> Consultar();
-        ContatoDTO Consultar(int id);
-        void Criar(ContatoDTO contato);
+
         void Excluir(int id);
     }
 }
