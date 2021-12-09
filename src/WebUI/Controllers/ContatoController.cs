@@ -3,33 +3,41 @@ using Microsoft.AspNetCore.Mvc;
 using DAO;
 using DTO;
 using WebUI.Models;
+using AutoMapper;
 
 namespace WebUI.Controllers
 {
     public class ContatoController : Controller
     {
-        private IContatoDAO _contatoDAO;
+        private readonly IContatoDAO _contatoDAO;
+        private readonly IMapper _mapper;
         
-        public ContatoController(IContatoDAO contatoDAO)
+        public ContatoController(IContatoDAO contatoDAO, IMapper mapper)
         {
             _contatoDAO = contatoDAO;
+            _mapper = mapper;
         }
         public IActionResult Index()
         {
             var lstContatoDTO = _contatoDAO.Consultar();
-            var lstContato = new List<ContatoViewModel>();
+            var lstContatoViewModel = new List<ContatoViewModel>();
 
-            foreach(var dto in lstContatoDTO)
+            foreach(var contatoDTO in lstContatoDTO)
             {
-                lstContato.Add(new ContatoViewModel()
-                {
-                    Id = dto.Id,
-                    Nome = dto.Nome,
-                    Sobrenome = dto.Sobrenome,
-                    Email = dto.Email
-                });
+                lstContatoViewModel.Add(_mapper.Map<ContatoViewModel>(contatoDTO));
             }
-            return View(lstContato);
+
+            // foreach(var dto in lstContatoDTO)
+            // {
+            //     lstContato.Add(new ContatoViewModel()
+            //     {
+            //         Id = dto.Id,
+            //         Nome = dto.Nome,
+            //         Sobrenome = dto.Sobrenome,
+            //         Email = dto.Email
+            //     });
+            // }
+            return View(lstContatoViewModel);
         }
 
         public IActionResult Create()
@@ -39,21 +47,22 @@ namespace WebUI.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(ContatoViewModel contato)
+        public IActionResult Create(ContatoViewModel contatoViewModel)
         {
             if(!ModelState.IsValid)
             {
                 return View();
             }
 
-            var ContatoDTO = new ContatoDTO
-            {
-                Nome = contato.Nome,
-                Sobrenome = contato.Sobrenome,
-                Email = contato.Email
-            };
+            var contatoDTO = _mapper.Map<ContatoDTO>(contatoViewModel);
+            // var ContatoDTO = new ContatoDTO
+            // {
+            //     Nome = contatoViewModel.Nome,
+            //     Sobrenome = contatoViewModel.Sobrenome,
+            //     Email = contatoViewModel.Email
+            // };
 
-            _contatoDAO.Criar(ContatoDTO);
+            _contatoDAO.Criar(contatoDTO);
 
             return RedirectToAction("Index");
         }
@@ -62,46 +71,50 @@ namespace WebUI.Controllers
         {
             var contatoDTO = _contatoDAO.Consultar(id);
 
-            var contato = new ContatoViewModel()
-            {
-                Id = contatoDTO.Id,
-                Nome = contatoDTO.Nome,
-                Sobrenome = contatoDTO.Sobrenome,
-                Email = contatoDTO.Email
-            };
-            return View(contato);
+            var contatoViewModel = _mapper.Map<ContatoViewModel>(contatoDTO);
+            // var contato = new ContatoViewModel()
+            // {
+            //     Id = contatoDTO.Id,
+            //     Nome = contatoDTO.Nome,
+            //     Sobrenome = contatoDTO.Sobrenome,
+            //     Email = contatoDTO.Email
+            // };
+            return View(contatoViewModel);
         }
 
         public IActionResult Update(int id)
         {
             var contatoDTO = _contatoDAO.Consultar(id);
 
-            var contato = new ContatoViewModel()
-            {
-                Id = contatoDTO.Id,
-                Nome = contatoDTO.Nome,
-                Sobrenome = contatoDTO.Sobrenome,
-                Email = contatoDTO.Email
-            };
+            var contatoViewModel = _mapper.Map<ContatoViewModel>(contatoDTO);
+            // var contatoViewModel = new ContatoViewModel()
+            // {
+            //     Id = contatoDTO.Id,
+            //     Nome = contatoDTO.Nome,
+            //     Sobrenome = contatoDTO.Sobrenome,
+            //     Email = contatoDTO.Email
+            // };
 
-            return View(contato);
+            return View(contatoViewModel);
         }
 
         [HttpPost]
-        public IActionResult Update(ContatoViewModel contato)
+        public IActionResult Update(ContatoViewModel contatoViewModel)
         {
             if(!ModelState.IsValid)
             {
                 return View();
             }
 
-            var contatoDTO = new ContatoDTO
-            {
-                Id = contato.Id,
-                Nome = contato.Nome,
-                Sobrenome = contato.Sobrenome,
-                Email = contato.Email
-            };
+            var contatoDTO = _mapper.Map<ContatoDTO>(contatoViewModel);
+
+            // var contatoDTO = new ContatoDTO
+            // {
+            //     Id = contatoViewModel.Id,
+            //     Nome = contatoViewModel.Nome,
+            //     Sobrenome = contatoViewModel.Sobrenome,
+            //     Email = contatoViewModel.Email
+            // };
 
             _contatoDAO.Atualizar(contatoDTO);
 

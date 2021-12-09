@@ -9,7 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DAO;
-
+using WebUI.Models;
+using DTO;
+using AutoMapper;
 
 namespace WebUI
 {
@@ -27,6 +29,13 @@ namespace WebUI
         {
             services.AddControllersWithViews();
 
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ContatoViewModel, ContatoDTO>().ReverseMap();
+            });
+            IMapper mapper = config.CreateMapper();
+
+            services.AddSingleton(mapper);
             services.AddTransient<IContatoDAO, ContatoDAO>();
         }
 
