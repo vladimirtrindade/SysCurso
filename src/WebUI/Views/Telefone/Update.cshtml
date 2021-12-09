@@ -1,0 +1,42 @@
+@model TelefoneViewModel
+
+@{
+    ViewBag.Title = "Novo";
+}
+
+<h2>Criar Novo Contato</h2>
+
+<form asp-controller="Telefone" asp-action="Update">
+
+    <input asp-for="Id" hidden />
+    <input asp-for="ContatoId" hidden />
+
+    <div class="form-group">
+        <label asp-for="Numero" class="form-label"></label>
+        <input asp-for="Numero" class="form-control" />
+        <span asp-validation-for="Numero" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Salvar" class="btn btn-primary" />
+    </div>
+
+</form>
+<div>
+    <a asp-controller="Contato" asp-action="Details" asp-route-id="@Model.ContatoId"
+        class="btn btn-secondary">Voltar</a>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_InputMaskScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function() {
+            $('#Numero').mask('(00)0000-0000');
+        })
+    </script>
+}

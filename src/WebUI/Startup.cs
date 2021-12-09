@@ -32,11 +32,13 @@ namespace WebUI
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ContatoViewModel, ContatoDTO>().ReverseMap();
+                cfg.CreateMap<TelefoneViewModel, TelefoneDTO>().ReverseMap();
             });
             IMapper mapper = config.CreateMapper();
 
             services.AddSingleton(mapper);
             services.AddTransient<IContatoDAO, ContatoDAO>();
+            services.AddTransient<ITelefoneDAO, TelefoneDAO>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

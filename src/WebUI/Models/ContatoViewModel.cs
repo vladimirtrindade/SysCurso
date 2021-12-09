@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebUI.Models
 {
     public class ContatoViewModel
     {
+        public List<TelefoneViewModel> LstTelefoneViewModel { get; } = new List<TelefoneViewModel>();
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Insira o Nome")]

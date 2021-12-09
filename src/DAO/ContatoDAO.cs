@@ -8,37 +8,13 @@ using Dapper;
 
 namespace DAO
 {
-    public class ContatoDAO : IContatoDAO
+    public class ContatoDAO : BaseDAO, IContatoDAO
     {
-        private string DataSourceFile => Environment.CurrentDirectory + "\\SisCursoDB.sqlite";
 
-        private SQLiteConnection Connection => new SQLiteConnection("Data Source=" + DataSourceFile);
-
-        public ContatoDAO()
+        public ContatoDAO() : base()
         {
-            if (!File.Exists(DataSourceFile))
-            {
-                CreateDatabase();
-            }
+            
         }
-
-        private void CreateDatabase()
-        {
-            using(var con = Connection)
-            {
-                con.Open();
-                con.Execute(
-                    @"CREATE TABLE Contato
-                    (
-                        Id          integer primary key autoincrement,
-                        Nome        varchar(100) not null,
-                        Sobrenome   varchar(100) not null,
-                        Email       varchar(100) not null
-                    )"
-                );
-            }
-        }
-
         public List<ContatoDTO> Consultar()
         {
             using(var con = Connection)
