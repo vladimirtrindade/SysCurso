@@ -8,11 +8,11 @@ using Dapper;
 
 namespace DAO
 {
-    public class ContatoDAO
+    public class ContatoDAO : IContatoDAO
     {
         private string DataSourceFile => Environment.CurrentDirectory + "\\SisCursoDB.sqlite";
 
-        public SQLiteConnection Connection => new SQLiteConnection("Data Source=" + DataSourceFile);
+        private SQLiteConnection Connection => new SQLiteConnection("Data Source=" + DataSourceFile);
 
         public ContatoDAO()
         {
@@ -40,7 +40,7 @@ namespace DAO
 
         public List<ContatoDTO> Consultar()
         {
-            using(var con = Connection)
+            using (var con = Connection)
             {
                 con.Open();
                 var result = con.Query<ContatoDTO>(
@@ -54,7 +54,7 @@ namespace DAO
 
         public void Criar(ContatoDTO contato)
         {
-            using(var con = Connection)
+            using (var con = Connection)
             {
                 con.Open();
                 contato.Id = con.Execute(
@@ -65,9 +65,9 @@ namespace DAO
             }
         }
 
-        public ContatoDTO Consultar(int id) 
+        public ContatoDTO Consultar(int id)
         {
-            using(var con = Connection)
+            using (var con = Connection)
             {
                 con.Open();
                 var result = con.Query<ContatoDTO>(
@@ -82,7 +82,7 @@ namespace DAO
 
         public void Atualizar(ContatoDTO contato)
         {
-            using(var con = Connection)
+            using (var con = Connection)
             {
                 con.Open();
                 contato.Id = con.Execute(
