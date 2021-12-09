@@ -6,6 +6,7 @@ using WebUI.Models;
 using AutoMapper;
 using System;
 
+
 namespace WebUI.Controllers
 {
     public class ContatoController : Controller
@@ -67,7 +68,16 @@ namespace WebUI.Controllers
             }
 
             var contatoDTO = _mapper.Map<ContatoDTO>(contatoViewModel);
-            _contatoDAO.Criar(contatoDTO);
+
+            try
+            {
+                _contatoDAO.Criar(contatoDTO);
+                TempData[Constants.Message.SUCCESS] = "Contato cadastrado com sucesso.";
+            }
+            catch (Exception ex)
+            {
+                TempData[Constants.Message.ERROR] = ex.Message;
+            }
 
             return RedirectToAction("Index");
         }
@@ -89,7 +99,16 @@ namespace WebUI.Controllers
             }
 
             var contatoDTO = _mapper.Map<ContatoDTO>(contatoViewModel);
-            _contatoDAO.Atualizar(contatoDTO);
+
+            try
+            {
+                _contatoDAO.Atualizar(contatoDTO);
+                TempData[Constants.Message.SUCCESS] = "Contato atualizado com sucesso.";
+            }
+            catch (Exception ex)
+            {
+                TempData[Constants.Message.ERROR] = ex.Message;
+            }
 
             return RedirectToAction("Index");
         }
@@ -100,11 +119,11 @@ namespace WebUI.Controllers
             try
             {
                 _contatoDAO.Excluir(id);
-                TempData["SuccessMessage"] = "Contato excluído com sucesso";
+                TempData[Constants.Message.SUCCESS] = "Contato excluído com sucesso.";
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = ex.Message;
+                TempData[Constants.Message.ERROR] = ex.Message;
             }
 
             return RedirectToAction("Index");

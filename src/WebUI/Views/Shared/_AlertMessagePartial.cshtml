@@ -1,0 +1,13 @@
+@if(TempData[Constants.Message.SUCCESS] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData[Constants.Message.SUCCESS].ToString()
+    </div>
+}
+
+@if(TempData[Constants.Message.ERROR] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData[Constants.Message.ERROR].ToString()
+    </div>
+}
