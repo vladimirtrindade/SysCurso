@@ -6,7 +6,7 @@ using System.Linq;
 using DTO;
 using Dapper;
 
-namespace DAO
+namespace DAO.SQLite
 {
     public class BaseDAO
     {

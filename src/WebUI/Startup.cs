@@ -18,12 +18,15 @@ namespace WebUI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            CurrentEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
+
+        private IWebHostEnvironment CurrentEnvironment { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -32,7 +35,7 @@ namespace WebUI
 
             services.AddAutoMapper();
 
-            services.AddDependencyInjection();
+            services.AddDependencyInjection(CurrentEnvironment, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
